@@ -1,10 +1,10 @@
 import FormSubscription from "./FormSubscription";
 import "./NewSubscription.css"
 
-const NewSubscription=()=>{
+const NewSubscription=(props)=>{
     return(
         <div className="new_subscription">
-            <FormSubscription/>
+            <FormSubscription formToNew={props.newSubToApp} />
         </div>
     );
 }
