@@ -1,34 +1,42 @@
 import { useState } from "react";
 import "./FormSubscription.css"
 const FormSubscription=()=>{
-    const [title,setTitle]=useState("");
-    const [date,setDate]=useState("");
-    const [amount,SetAmount] = useState("");
+    const [form,setForm] = useState({ title: "", date: "", amount: "" });
 
     const onTitleHandler=(event)=>{
-        setTitle(event.target.value)
+        // setForm ({ ...form, title:event.target.value })
+
+        // same thing is done by below arrow function prev state is a by default parameter which is the previus state of the state,
+        //  and it is more reliable than ...form
+        setForm((prevState)=>{
+            return {...prevState,title:event.target.value}
+        })
     }
     const onDateHandler = (event) => {
-        setDate(event.target.value);
+        setForm({ ...form, date: event.target.value })
     }
     const onAmountHandler = (event) => {
-        SetAmount(event.target.value); 
+        setForm({ ...form, amount: event.target.value }) 
     }
-    
+    const OnSubmitHandler=(event)=>{
+        const subscriptions={title:form.title,date:form.date,amount:form.amount}
+        console.log(subscriptions)
+        event.preventDefault();
+    }
     return (
-        <form>
+        <form onSubmit={OnSubmitHandler}>
             <div className="new_subscription_controls">
                 <div className="new_subscription_control">
                     <label>Title</label>
-                    <input type="text" onChange={onTitleHandler} value={title}></input>
+                    <input type="text" onChange={onTitleHandler} value={form.title}></input>
                 </div>
                 <div className="new_subscription_control">
                     <label>Date</label>
-                    <input type="date" onChange={onDateHandler} ></input>
+                    <input type="date" onChange={onDateHandler} value={form.date}></input>
                 </div>
                 <div className="new_subscription_control">
                     <label>Amount</label>
-                    <input type="text" onChange={onAmountHandler} ></input>
+                    <input type="text" onChange={onAmountHandler} value={form.amount}></input>
                 </div>
                 <div className="new_subscription_actions">
                     <button type="submit">Add New</button>
