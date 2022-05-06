@@ -1,7 +1,6 @@
 import Container from "../templates/Container";
 import "./SubscriptionDate.css"
 const SubscriptionDate=(props)=>{
-    console.log(props.date)
     let day=props.date.toLocaleString('default',{day:'2-digit'})
     let month=props.date.toLocaleString('default',{month:'long'})
     let year=props.date.getFullYear();
