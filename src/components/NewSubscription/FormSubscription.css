@@ -24,6 +24,9 @@
 .new_subscription_actions {
     text-align: right;
 }
+#cnlbtn{
+        background-color: #a02828;
+}
 
 .danger {
     background: #8b0909 !important

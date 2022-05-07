@@ -4,6 +4,7 @@ import NewSubscription from './components/NewSubscription/NewSubscription';
 import { useState } from 'react';
 import Filter from './components/NewSubscription/Filter';
 import SubscriptionList from './components/NewSubscription/SubscriptionList';
+import SubscriptionChart from './components/NewSubscription/SubscriptionChart';
 
 let initialSubscriptions = [
   {
@@ -27,7 +28,8 @@ let initialSubscriptions = [
 ]
 function App() {
   const [subscriptions,setSubscription]=useState(initialSubscriptions);
-  const[filteredYear,setFilteredYear]=useState("2022");
+  const[filteredYear,setFilteredYear]=useState("2020");
+  
 
   const newSubToApp=(data)=>{
     setSubscription([data, ...subscriptions] ) 
@@ -45,6 +47,9 @@ function App() {
     <Container>
       <NewSubscription newSubToApp={newSubToApp}/>
       <Filter filteredData={filteredYear} dataFromFilter={dataFromFilter}/>
+      {/* LOOK Here */}
+      <SubscriptionChart filterSubscription={filteredArr}/>
+      
       <SubscriptionList list={filteredArr}/>
     </Container>
   );

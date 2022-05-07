@@ -4,10 +4,6 @@ const FormSubscription = (props) => {
     const [form, setForm] = useState({ title: "", date: "", amount: ""});
     
     const onTitleHandler = (event) => {
-        // setForm ({ ...form, title:event.target.value })
-
-        // same thing is done by below arrow function prev state is a by default parameter which is the previus state of the state,
-        //  and it is more reliable than ...form
         setForm((prevState) => {
             return { ...prevState, title: event.target.value }
         })
@@ -21,6 +17,7 @@ const FormSubscription = (props) => {
     const OnSubmitHandler = (event) => {
         const subscriptions = { title: form.title, date: new Date(form.date), amount: form.amount }
         props.formToNew(subscriptions);
+        props.setShowForm(false)
         event.preventDefault();
     }
     return (
@@ -39,7 +36,8 @@ const FormSubscription = (props) => {
                     <input type="text" onChange={onAmountHandler} value={form.amount}></input>
                 </div>
                 <div className="new_subscription_actions">
-                    <button type="submit">Add New</button>
+                    <button id="cnlbtn" onClick={props.onCancelHandler}>Cancel</button>
+                    <button type="submit">Save</button>
                 </div>
             </div>
         </form>
