@@ -2,8 +2,10 @@ import { useState } from "react";
 import "./FormSubscription.css"
 const FormSubscription = (props) => {
     const [form, setForm] = useState({ title: "", date: "", amount: ""});
+    const [isValid,setIsValid]=useState(true);
     
     const onTitleHandler = (event) => {
+        setIsValid(true)
         setForm((prevState) => {
             return { ...prevState, title: event.target.value }
         })
@@ -15,17 +17,22 @@ const FormSubscription = (props) => {
         setForm({ ...form, amount: event.target.value })
     }
     const OnSubmitHandler = (event) => {
+        event.preventDefault();
+        if (form.title.trim().length === 0 || form.title.length <= 3 || form.title.length >= 20 ){
+            setIsValid(false)
+            return;
+        }
         const subscriptions = { title: form.title, date: new Date(form.date), amount: form.amount }
         props.formToNew(subscriptions);
         props.setShowForm(false)
-        event.preventDefault();
     }
     return (
         <form onSubmit={OnSubmitHandler}>
             <div className="new_subscription_controls">
                 <div className="new_subscription_control">
-                    <label>Title</label>
-                    <input type="text" onChange={onTitleHandler} value={form.title}></input>
+                    {/* Look Here */}
+                    <label style={{ color: isValid ? "black" : "red" }} >Title</label>
+                    {<input style={{color: isValid ? "black" : "red"}} type="text" onChange={onTitleHandler} value={form.title}></input>}
                 </div>
                 <div className="new_subscription_control">
                     <label>Date</label>
