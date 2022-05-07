@@ -40,16 +40,38 @@ function App() {
   const filteredArr=subscriptions.filter((item)=>{
     return item.date.getFullYear().toString()===filteredYear
   })
+
+  {/* Look Here Condition Rendring  for 1st,2nd Method*/ }
+  const ConditionRen=()=>{
+    return(
+    filteredArr.map((item, index) =>
+      <Subscription date={item.date} title={item.title} amount={item.amount} key={index} />
+    )
+    )
+  }
+  {/* Look Here Condition Rendring  for 3rd Method*/ }
+  let content=<h5>no data found</h5>;
+  if(filteredArr.length!==0){
+    content = filteredArr.map((item, index) =>
+      <Subscription date={item.date} title={item.title} amount={item.amount} key={index} />
+    )
+  }
   
 
   return (
     <Container>
       <NewSubscription newSubToApp={newSubToApp}/>
       <Filter filteredData={filteredYear} dataFromFilter={dataFromFilter}/>
-      {/* Look Here */}
-      {filteredArr.map((item,index)=>
-      <Subscription date={item.date} title={item.title} amount={item.amount} key={index}/>
-      )}
+
+      {/* 1st method Look Here Condition Rendring */}
+      {/* {filteredArr.length===0?<h5>No data found</h5>:<ConditionRen/>} */}
+
+      {/*2nd method or to get rid of complex ternary operator we can use below statement */}
+      {/* {filteredArr.length === 0 && <h5>No data found</h5>}
+      {filteredArr.length !== 0 && <ConditionRen /> } */}
+
+      {/* 3rd method without any condition */}
+      {content}
     </Container>
   );
 }
