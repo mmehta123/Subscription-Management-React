@@ -3,6 +3,7 @@ import  Container  from "./templates/Container";
 import Subscription from './components/Subscription';
 import NewSubscription from './components/NewSubscription/NewSubscription';
 import { useState } from 'react';
+import Filter from './components/NewSubscription/Filter';
 
 let initialSubscriptions = [
   {
@@ -26,13 +27,20 @@ let initialSubscriptions = [
 ]
 function App() {
   const [subscriptions,setSubscription]=useState(initialSubscriptions);
- // LOOK HERE
+  const[filteredData,setFilteredData]=useState("2021");
+
   const newSubToApp=(data)=>{
     setSubscription([data, ...subscriptions] ) 
   }
+
+  const dataFromFilter=(data)=>{
+        setFilteredData(data);
+  }
+
   return (
     <Container>
       <NewSubscription newSubToApp={newSubToApp}/>
+      <Filter filteredData={filteredData} dataFromFilter={dataFromFilter}/>
       {subscriptions.map((item,index)=>
         <Subscription date={item.date} title={item.title} amount={item.amount} key={index}/>
       )}
