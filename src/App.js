@@ -27,22 +27,28 @@ let initialSubscriptions = [
 ]
 function App() {
   const [subscriptions,setSubscription]=useState(initialSubscriptions);
-  const[filteredData,setFilteredData]=useState("2021");
+  const[filteredYear,setFilteredYear]=useState("2022");
 
   const newSubToApp=(data)=>{
     setSubscription([data, ...subscriptions] ) 
   }
-
-  const dataFromFilter=(data)=>{
-        setFilteredData(data);
+// Look Here
+  const dataFromFilter=(year)=>{
+        setFilteredYear(year);
   }
+  // Look Here
+  const filteredArr=subscriptions.filter((item)=>{
+    return item.date.getFullYear().toString()===filteredYear
+  })
+  
 
   return (
     <Container>
       <NewSubscription newSubToApp={newSubToApp}/>
-      <Filter filteredData={filteredData} dataFromFilter={dataFromFilter}/>
-      {subscriptions.map((item,index)=>
-        <Subscription date={item.date} title={item.title} amount={item.amount} key={index}/>
+      <Filter filteredData={filteredYear} dataFromFilter={dataFromFilter}/>
+      {/* Look Here */}
+      {filteredArr.map((item,index)=>
+      <Subscription date={item.date} title={item.title} amount={item.amount} key={index}/>
       )}
     </Container>
   );
