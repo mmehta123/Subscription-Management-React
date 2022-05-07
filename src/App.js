@@ -49,7 +49,6 @@ function App() {
       <Filter filteredData={filteredYear} dataFromFilter={dataFromFilter}/>
       {/* LOOK Here */}
       <SubscriptionChart filterSubscription={filteredArr}/>
-      
       <SubscriptionList list={filteredArr}/>
     </Container>
   );

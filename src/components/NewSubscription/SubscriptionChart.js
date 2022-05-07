@@ -18,7 +18,8 @@ const SubscriptionChart =(props)=>{
     ];
     for(const Subscription of props.filterSubscription){
             const month=Subscription.date.getMonth();
-        chartData[month].value += Subscription.amount;
+            // it previously getting subscription.amount as string and append the value not adding them thats why we have to change it to number first
+        chartData[month].value += Number(Subscription.amount);
     }
     return(
         <div>
