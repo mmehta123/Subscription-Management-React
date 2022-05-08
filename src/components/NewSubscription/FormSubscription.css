@@ -31,3 +31,9 @@
 .danger {
     background: #8b0909 !important
 }
+.new_subscription_label{
+    color:black
+}
+.new_subscription_label_invalid {
+    color: #a02828;
+}

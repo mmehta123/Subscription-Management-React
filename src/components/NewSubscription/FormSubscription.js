@@ -31,8 +31,8 @@ const FormSubscription = (props) => {
             <div className="new_subscription_controls">
                 <div className="new_subscription_control">
                     {/* Look Here */}
-                    <label style={{ color: isValid ? "black" : "red" }} >Title</label>
-                    {<input style={{color: isValid ? "black" : "red"}} type="text" onChange={onTitleHandler} value={form.title}></input>}
+                    <label className={`new_subscription_label${!isValid?"_invalid":""}`} >Title</label>
+                    {<input type="text" onChange={onTitleHandler} value={form.title}></input>}
                 </div>
                 <div className="new_subscription_control">
                     <label>Date</label>
