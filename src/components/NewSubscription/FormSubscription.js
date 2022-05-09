@@ -1,18 +1,26 @@
 import { useEffect, useState } from "react";
 import "./FormSubscription.css"
 const FormSubscription = (props) => {
-    const [form, setForm] = useState({ title: "", date: "", amount: ""});
-    const [isValid,setIsValid]=useState(true);
-    const [isAmountValid, setIsAmountValid] = useState(true);
-    useEffect(()=>{
-        if (form.title.trim().length > 0) {
-            setIsValid(true)
+    const [form, setForm] = useState({ title: "", date: "", amount: "" });
+    const [isValid, setIsValid] = useState(true);
+
+    useEffect(() => {
+        const timerId = setTimeout(() => {
+            console.log("run effect")
+            if (form.title.trim().length > 0) {
+                setIsValid(true)
+            }
+        }, 2000);
+        // cleanup function always be called at first then settimeout
+        return () => {
+            console.log("cleanup function ");
+            // using cleartimeout function now effect function only 
+            // runs on last typed character check by typing quicky
+            // with and without clearTimeout function
+            clearTimeout(timerId);
         }
-        if(form.amount.trim().length>0){
-            setIsAmountValid(true)
-        }
-    },[form.title,form.amount]);
-    
+    }, [form.title]);
+
     const onTitleHandler = (event) => {
         setForm((prevState) => {
             return { ...prevState, title: event.target.value }
@@ -26,12 +34,8 @@ const FormSubscription = (props) => {
     }
     const OnSubmitHandler = (event) => {
         event.preventDefault();
-        if (form.title.trim().length === 0|| form.title.length >= 20 ){
+        if (form.title.trim().length === 0 || form.title.length >= 20) {
             setIsValid(false)
-            return;
-        }
-        if(form.amount.trim().length===0 || Number(form.amount)<100){
-            setIsAmountValid(false);
             return;
         }
         const subscriptions = { title: form.title, date: new Date(form.date), amount: form.amount }
@@ -42,7 +46,7 @@ const FormSubscription = (props) => {
         <form onSubmit={OnSubmitHandler}>
             <div className="new_subscription_controls">
                 <div className="new_subscription_control">
-                    <label className={`new_subscription_label${!isValid?"_invalid":""}`} >Title</label>
+                    <label className={`new_subscription_label${!isValid ? "_invalid" : ""}`} >Title</label>
                     {<input type="text" onChange={onTitleHandler} value={form.title}></input>}
                 </div>
                 <div className="new_subscription_control">
@@ -50,7 +54,7 @@ const FormSubscription = (props) => {
                     <input type="date" onChange={onDateHandler} value={form.date}></input>
                 </div>
                 <div className="new_subscription_control">
-                    <label className={`new_subscription_label${!isAmountValid ? "_invalid" : ""}`}>Amount</label>
+                    <label >Amount</label>
                     <input type="text" onChange={onAmountHandler} value={form.amount}></input>
                 </div>
                 <div className="new_subscription_actions">
