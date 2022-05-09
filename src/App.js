@@ -34,7 +34,6 @@ function App() {
   useEffect(() => {
     if (localStorage.getItem('filteredYear')) {
       setFilteredYear(localStorage.getItem('filteredYear'))
-      console.log("run useEffect" + localStorage.getItem('filteredYear'))
     }
   }, [])
 
@@ -46,7 +45,6 @@ function App() {
     setFilteredYear(year);
     // it saves filtered year in local storage of browser see in inspect application option
     localStorage.setItem('filteredYear', year)
-    console.log("run datafromfilter", localStorage.getItem('filteredYear', year))
   }
 
   const filteredArr = subscriptions.filter((item) => {
@@ -57,7 +55,6 @@ function App() {
     <Container>
       <NewSubscription newSubToApp={newSubToApp} />
       <Filter filteredData={filteredYear} dataFromFilter={dataFromFilter} />
-      {/* LOOK Here */}
       <SubscriptionChart filterSubscription={filteredArr} />
       <SubscriptionList list={filteredArr} />
     </Container>

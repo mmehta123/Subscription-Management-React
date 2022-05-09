@@ -1,11 +1,19 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./FormSubscription.css"
 const FormSubscription = (props) => {
     const [form, setForm] = useState({ title: "", date: "", amount: ""});
     const [isValid,setIsValid]=useState(true);
+    const [isAmountValid, setIsAmountValid] = useState(true);
+    useEffect(()=>{
+        if (form.title.trim().length > 0) {
+            setIsValid(true)
+        }
+        if(form.amount.trim().length>0){
+            setIsAmountValid(true)
+        }
+    },[form.title,form.amount]);
     
     const onTitleHandler = (event) => {
-        setIsValid(true)
         setForm((prevState) => {
             return { ...prevState, title: event.target.value }
         })
@@ -18,8 +26,12 @@ const FormSubscription = (props) => {
     }
     const OnSubmitHandler = (event) => {
         event.preventDefault();
-        if (form.title.trim().length === 0 || form.title.length <= 3 || form.title.length >= 20 ){
+        if (form.title.trim().length === 0|| form.title.length >= 20 ){
             setIsValid(false)
+            return;
+        }
+        if(form.amount.trim().length===0 || Number(form.amount)<100){
+            setIsAmountValid(false);
             return;
         }
         const subscriptions = { title: form.title, date: new Date(form.date), amount: form.amount }
@@ -30,7 +42,6 @@ const FormSubscription = (props) => {
         <form onSubmit={OnSubmitHandler}>
             <div className="new_subscription_controls">
                 <div className="new_subscription_control">
-                    {/* Look Here */}
                     <label className={`new_subscription_label${!isValid?"_invalid":""}`} >Title</label>
                     {<input type="text" onChange={onTitleHandler} value={form.title}></input>}
                 </div>
@@ -39,7 +50,7 @@ const FormSubscription = (props) => {
                     <input type="date" onChange={onDateHandler} value={form.date}></input>
                 </div>
                 <div className="new_subscription_control">
-                    <label>Amount</label>
+                    <label className={`new_subscription_label${!isAmountValid ? "_invalid" : ""}`}>Amount</label>
                     <input type="text" onChange={onAmountHandler} value={form.amount}></input>
                 </div>
                 <div className="new_subscription_actions">

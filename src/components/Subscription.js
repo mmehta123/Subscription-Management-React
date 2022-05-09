@@ -3,12 +3,11 @@ import Container from "../templates/Container";
 import SubscriptionDate from "./SubscriptionDate"
 import { useState } from "react";
 function Subscription (props){
-// const [title,setTitle]=useState(props.title);
-let title=props.title;
+const [title,setTitle]=useState(props.title);
+
 
     const titleChangeHandler=()=>{
-       
-        title="hell"
+        setTitle('hell yeah!!')
     }
     return (
         <Container className="subscription" >
