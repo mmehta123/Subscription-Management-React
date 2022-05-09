@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import Filter from './components/NewSubscription/Filter';
 import SubscriptionList from './components/NewSubscription/SubscriptionList';
 import SubscriptionChart from './components/NewSubscription/SubscriptionChart';
+import SubscriptionsContext from './store/subscribers-context';
 
 let initialSubscriptions = [
   {
@@ -29,8 +30,6 @@ let initialSubscriptions = [
 function App() {
   const [subscriptions, setSubscription] = useState(initialSubscriptions);
   const [filteredYear, setFilteredYear] = useState("2020");
-  // so if there is any previous filtered year saved then it will first load usestate with data with localstorage year
-  // if nothing is saved it will not run show by default 2020 filteredYear data
   useEffect(() => {
     if (localStorage.getItem('filteredYear')) {
       setFilteredYear(localStorage.getItem('filteredYear'))
@@ -55,8 +54,10 @@ function App() {
     <Container>
       <NewSubscription newSubToApp={newSubToApp} />
       <Filter filteredData={filteredYear} dataFromFilter={dataFromFilter} />
-      <SubscriptionChart filterSubscription={filteredArr} />
-      <SubscriptionList list={filteredArr} />
+      <SubscriptionsContext.Provider value={{ list: [] }}>
+        <SubscriptionChart filterSubscription={filteredArr} />
+        <SubscriptionList list={filteredArr} />
+      </SubscriptionsContext.Provider>
     </Container>
   );
 }

@@ -22,13 +22,11 @@ const FormSubscription = (props) => {
 
     useEffect(() => {
         const timerId = setTimeout(() => {
-            console.log("run effect")
             if (reducerTitle.trim().length > 0) {
                 setIsValid(true)
             }
         }, 2000);
         return () => {
-            console.log("cleanup function ");
             clearTimeout(timerId);
         }
     }, [reducerTitle]);
