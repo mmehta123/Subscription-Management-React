@@ -29,7 +29,10 @@ let initialSubscriptions = [
 function App() {
   const [subscriptions,setSubscription]=useState(initialSubscriptions);
   const[filteredYear,setFilteredYear]=useState("2020");
-  
+  if(localStorage.getItem('filteredYear')){
+    //BUG:::::: got local storage item but this if statement sets the state again and again with same value and starts an infinte loop
+    setFilteredYear(localStorage.getItem('filteredyear'))
+  }
 
   const newSubToApp=(data)=>{
     setSubscription([data, ...subscriptions] ) 
@@ -37,6 +40,8 @@ function App() {
 
   const dataFromFilter=(year)=>{
         setFilteredYear(year);
+        // saved filtered year in local storage of browser see in inspect application option
+        localStorage.setItem('filteredYear',year)
   }
 
   const filteredArr=subscriptions.filter((item)=>{
