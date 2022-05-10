@@ -44,6 +44,7 @@ function App() {
     setFilteredYear(year);
     // it saves filtered year in local storage of browser see in inspect application option
     localStorage.setItem('filteredYear', year)
+    console.log("dummy function called")
   }
 
   const filteredArr = subscriptions.filter((item) => {
@@ -54,7 +55,7 @@ function App() {
     <Container>
       <NewSubscription newSubToApp={newSubToApp} />
       <Filter filteredData={filteredYear} dataFromFilter={dataFromFilter} />
-      <SubscriptionsContext.Provider value={{ list: [] }}>
+      <SubscriptionsContext.Provider value={{ list: [],dummy:dataFromFilter }}>
         <SubscriptionChart filterSubscription={filteredArr} />
         <SubscriptionList list={filteredArr} />
       </SubscriptionsContext.Provider>
