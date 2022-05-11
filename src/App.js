@@ -30,6 +30,7 @@ let initialSubscriptions = [
 function App() {
   const [subscriptions, setSubscription] = useState(initialSubscriptions);
   const [filteredYear, setFilteredYear] = useState("2020");
+  const [isLoading,setIsLoading]=useState(false)
   useEffect(() => {
     if (localStorage.getItem('filteredYear')) {
       setFilteredYear(localStorage.getItem('filteredYear'))
@@ -44,21 +45,42 @@ function App() {
     setFilteredYear(year);
     // it saves filtered year in local storage of browser see in inspect application option
     localStorage.setItem('filteredYear', year)
-    console.log("dummy function called")
   }
 
   const filteredArr = subscriptions.filter((item) => {
     return item.date.getFullYear().toString() === filteredYear;
   })
 
+  const fetchDataHandler=async ()=>{
+    setIsLoading(true);
+    fetch("https://react-workspace-45271-default-rtdb.firebaseio.com").then(
+      (response)=>{
+        return response.json();
+      }
+    ).then((data)=>{
+      //our transform login 
+      setIsLoading(false)
+    })
+
+    // Another Method and very optimized beacuse it will not be async now as the previous but we have to
+    // use async keyword in the arrow function and use await also
+
+    // const response= await fetch("https://react-workspace-45271-default-rtdb.firebaseio.com"); 
+    // const data=await response.json();
+    // const transformedData=data.toString();
+    
+  }
+
   return (
     <Container>
+      <button onClick={fetchDataHandler}>Fetch Data</button>
       <NewSubscription newSubToApp={newSubToApp} />
       <Filter filteredData={filteredYear} dataFromFilter={dataFromFilter} />
-      <SubscriptionsContext.Provider value={{ list: [],dummy:dataFromFilter }}>
         <SubscriptionChart filterSubscription={filteredArr} />
-        <SubscriptionList list={filteredArr} />
-      </SubscriptionsContext.Provider>
+        { !isLoading && filteredArr.length>0 && <SubscriptionList list={filteredArr} />}
+        {!isLoading && filteredArr.length==0 && <p className='list-no-data'>No data Found from server</p>}
+        {isLoading && <h2>Data is Loading</h2>}
+      
     </Container>
   );
 }

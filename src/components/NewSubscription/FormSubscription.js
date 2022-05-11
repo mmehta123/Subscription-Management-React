@@ -23,7 +23,7 @@ const FormSubscription = (props) => {
     useEffect(() => {
         const timerId = setTimeout(() => {
             if (reducerTitle.trim().length > 0) {
-                setIsValid(true)
+                setIsValid(true);
             }
         }, 2000);
         return () => {
