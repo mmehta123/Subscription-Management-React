@@ -1,7 +1,7 @@
 import './App.css';
 import Container from "./templates/Container";
 import NewSubscription from './components/NewSubscription/NewSubscription';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import Filter from './components/NewSubscription/Filter';
 import SubscriptionList from './components/NewSubscription/SubscriptionList';
 import SubscriptionChart from './components/NewSubscription/SubscriptionChart';
@@ -43,7 +43,6 @@ function App() {
 
   const dataFromFilter = (year) => {
     setFilteredYear(year);
-    // it saves filtered year in local storage of browser see in inspect application option
     localStorage.setItem('filteredYear', year)
   }
 
@@ -51,28 +50,31 @@ function App() {
     return item.date.getFullYear().toString() === filteredYear;
   })
 
-  const fetchDataHandler = async () => {
+  // see after removing wrap hook useCallback and read below comments
+  const fetchDataHandler = /*async*/ useCallback(() => {
     setIsLoading(true);
     fetch("https://react-workspace-45271-default-rtdb.firebaseio.com/data.json").then(
       (response) => {
+        console.log("response",response,response.json)
         return response.json();
       }
     ).then((data) => {
-      //our transform login 
+      console.log("data :",data)
       setIsLoading(false)
-      // error catching using .catch()  if we use below method then we have surround our code with try and catch block
+      
     }).catch((error) => {
       console.log(error)
     })
+  },[])
 
-    // Another Method and very optimized beacuse it will not be async now as the previous but we have to
-    // use async keyword in the arrow function and use await also
+  useEffect(()=>{
+    fetchDataHandler();
+  },[fetchDataHandler])
 
-    // const response= await fetch("https://react-workspace-45271-default-rtdb.firebaseio.com"); 
-    // const data=await response.json();
-    // const transformedData=data.toString();
-
-  }
+  //this will take us into an infinte loop beacuse everytime the function is called states will change every time react 
+  // thinks that a new function is called wether it is same or not that is why rerendring of component tkes place
+  // to overcome this side effect we have to wrap fetchdatahandler into useCallback then react will not treat ,
+  // the same function as new one and rerendring will not be done.
 
   return (
     <Container>
