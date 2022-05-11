@@ -37,8 +37,16 @@ function App() {
     }
   }, [])
 
-  const newSubToApp = (data) => {
-    setSubscription([data, ...subscriptions])
+  const newSubToApp = async (data) => {
+    setSubscription([data, ...subscriptions]);
+    const postResponse=await fetch("https://react-workspace-45271-default-rtdb.firebaseio.com/subscriptions.json"
+    ,{
+      
+      method:'POST',
+      body:JSON.stringify(data),
+      headers:{'content-type':'application/json'}
+    })
+    // now our new object is posted in firebase databasr we can also see it inspect under network tab and subscriptions.json 
   }
 
   const dataFromFilter = (year) => {
@@ -50,35 +58,13 @@ function App() {
     return item.date.getFullYear().toString() === filteredYear;
   })
 
-  // see after removing wrap hook useCallback and read below comments
-  const fetchDataHandler = /*async*/ useCallback(() => {
-    setIsLoading(true);
-    fetch("https://react-workspace-45271-default-rtdb.firebaseio.com/data.json").then(
-      (response) => {
-        console.log("response",response,response.json)
-        return response.json();
-      }
-    ).then((data) => {
-      console.log("data :",data)
-      setIsLoading(false)
-      
-    }).catch((error) => {
-      console.log(error)
-    })
-  },[])
+  
 
-  useEffect(()=>{
-    fetchDataHandler();
-  },[fetchDataHandler])
 
-  //this will take us into an infinte loop beacuse everytime the function is called states will change every time react 
-  // thinks that a new function is called wether it is same or not that is why rerendring of component tkes place
-  // to overcome this side effect we have to wrap fetchdatahandler into useCallback then react will not treat ,
-  // the same function as new one and rerendring will not be done.
 
   return (
     <Container>
-      <button onClick={fetchDataHandler}>Fetch Data</button>
+      <button>Fetch Data</button>
       <NewSubscription newSubToApp={newSubToApp} />
       <Filter filteredData={filteredYear} dataFromFilter={dataFromFilter} />
       <SubscriptionChart filterSubscription={filteredArr} />
