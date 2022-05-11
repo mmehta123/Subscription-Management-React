@@ -30,7 +30,7 @@ let initialSubscriptions = [
 function App() {
   const [subscriptions, setSubscription] = useState(initialSubscriptions);
   const [filteredYear, setFilteredYear] = useState("2020");
-  const [isLoading,setIsLoading]=useState(false)
+  const [isLoading, setIsLoading] = useState(false)
   useEffect(() => {
     if (localStorage.getItem('filteredYear')) {
       setFilteredYear(localStorage.getItem('filteredYear'))
@@ -51,15 +51,18 @@ function App() {
     return item.date.getFullYear().toString() === filteredYear;
   })
 
-  const fetchDataHandler=async ()=>{
+  const fetchDataHandler = async () => {
     setIsLoading(true);
-    fetch("https://react-workspace-45271-default-rtdb.firebaseio.com").then(
-      (response)=>{
+    fetch("https://react-workspace-45271-default-rtdb.firebaseio.com/data.json").then(
+      (response) => {
         return response.json();
       }
-    ).then((data)=>{
+    ).then((data) => {
       //our transform login 
       setIsLoading(false)
+      // error catching using .catch()  if we use below method then we have surround our code with try and catch block
+    }).catch((error) => {
+      console.log(error)
     })
 
     // Another Method and very optimized beacuse it will not be async now as the previous but we have to
@@ -68,7 +71,7 @@ function App() {
     // const response= await fetch("https://react-workspace-45271-default-rtdb.firebaseio.com"); 
     // const data=await response.json();
     // const transformedData=data.toString();
-    
+
   }
 
   return (
@@ -76,11 +79,11 @@ function App() {
       <button onClick={fetchDataHandler}>Fetch Data</button>
       <NewSubscription newSubToApp={newSubToApp} />
       <Filter filteredData={filteredYear} dataFromFilter={dataFromFilter} />
-        <SubscriptionChart filterSubscription={filteredArr} />
-        { !isLoading && filteredArr.length>0 && <SubscriptionList list={filteredArr} />}
-        {!isLoading && filteredArr.length==0 && <p className='list-no-data'>No data Found from server</p>}
-        {isLoading && <h2>Data is Loading</h2>}
-      
+      <SubscriptionChart filterSubscription={filteredArr} />
+      {!isLoading && filteredArr.length > 0 && <SubscriptionList list={filteredArr} />}
+      {!isLoading && filteredArr.length == 0 && <p className='list-no-data'>No data Found from server</p>}
+      {isLoading && <h2>Data is Loading</h2>}
+
     </Container>
   );
 }
