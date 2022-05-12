@@ -16,9 +16,7 @@ const SubscriptionChart =(props)=>{
         { 'label': 'Dec', value: 0 }
     ];
     for(const Subscription of props.filterSubscription){
-        console.log(Subscription)
         const month = Subscription.date.getMonth();
-            // it previously getting subscription.amount as string and append the value not adding them thats why we have to change it to number first
         chartData[month].value +=Subscription.amount;
     }
     return(
