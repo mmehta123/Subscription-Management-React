@@ -1,7 +1,6 @@
 import Chart from "../../templates/chart/Chart";
 
 const SubscriptionChart =(props)=>{
-    
     const chartData=[
         { 'label': 'Jan', value: 0 },
         { 'label': 'Feb', value: 0 },
@@ -17,9 +16,10 @@ const SubscriptionChart =(props)=>{
         { 'label': 'Dec', value: 0 }
     ];
     for(const Subscription of props.filterSubscription){
-            const month=Subscription.date.getMonth();
+        console.log(Subscription)
+        const month = Subscription.date.getMonth();
             // it previously getting subscription.amount as string and append the value not adding them thats why we have to change it to number first
-        chartData[month].value += Number(Subscription.amount);
+        chartData[month].value +=Subscription.amount;
     }
     return(
         <div>

@@ -48,7 +48,7 @@ const FormSubscription = (props) => {
             setIsValid(false)
             return;
         }
-        const subscriptions = { title: reducerTitle , date: new Date(formReducer.date), amount:  formReducer.amount}
+        const subscriptions = { title: reducerTitle , date: new Date(formReducer.date), amount:  formReducer.amount ,key: Math.random()}
         props.formToNew(subscriptions);
         props.setShowForm(false)
     }
