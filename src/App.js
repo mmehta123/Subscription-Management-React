@@ -5,29 +5,23 @@ import { useCallback, useEffect, useState } from 'react';
 import Filter from './components/NewSubscription/Filter';
 import SubscriptionList from './components/NewSubscription/SubscriptionList';
 import SubscriptionChart from './components/NewSubscription/SubscriptionChart';
+import useTime from './Hooks/Timer';
 
 let initialSubscriptions = [];
 function App() {
   const [subscriptions, setSubscription] = useState(initialSubscriptions);
   const [filteredYear, setFilteredYear] = useState("2020");
   const [isLoading, setIsLoading] = useState(false);
-  const [time,setTime]=useState();
+
   useEffect(() => {
     if (localStorage.getItem('filteredYear')) {
       setFilteredYear(localStorage.getItem('filteredYear'))
     }
-    const inter =setInterval(() => {
-      setTime(new Date().toLocaleString())
-      console.log("setinterval")
-
-    },1000);
-    return ()=>{
-      console.log("cleanup")
-      return clearInterval(inter)};
   }, []);
+
+  const time=useTime()
 // POSTING DATA TO API USING FORM ADD NEW BUTTON
   const newSubToApp = async (data) => {
-    // setSubscription([data, ...subscriptions]);
     const postResponse=await fetch("https://react-workspace-45271-default-rtdb.firebaseio.com/subscriptions.json"
     ,{
       
@@ -63,12 +57,9 @@ function App() {
     filteredArr[k].date = new Date(filteredArr[k].date)
   }
 
-
-
   return (
     <Container>
       <h1 style={{'color':'red','textAlign':'center'}}>Subscription-Management</h1>
-
       <div style={{'display':'flex',
       'justifyContent':'center',
       'backgroundColor':'#83b2e35c',"color":'#084a8e'}}>
